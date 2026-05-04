@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pixel Rhythm</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Rhythm</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div id="hud">
-    <div id="score">Score: 0</div>
-    <div id="combo">Combo: 0</div>
-  </div>
+    <h1>Pixel Rhythm</h1>
 
-  <div id="game-container">
-    <div class="lane" data-lane="0"></div>
-    <div class="lane" data-lane="1"></div>
-    <div class="lane" data-lane="2"></div>
-    <div class="lane" data-lane="3"></div>
-    <div id="judge-line"></div>
-  </div>
+    <div id="hud">
+        <span>Score: <span id="score">0</span></span>
+        <span>Combo: <span id="combo">0</span></span>
+        <span>ACC: <span id="acc">100.00%</span></span>
+    </div>
 
-  <audio id="bgm" src="music.mp3"></audio>
+    <div id="game">
+        <div class="lane" data-lane="0"></div>
+        <div class="lane" data-lane="1"></div>
+        <div class="lane" data-lane="2"></div>
+        <div class="lane" data-lane="3"></div>
 
-  <script src="game.js"></script>
+        <div id="judge-line"></div>
+    </div>
+
+    <script src="game.js"></script>
 </body>
 </html>
