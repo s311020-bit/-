@@ -3,42 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Rhythm</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pixel Rhythm - 像素節奏</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <h1>Pixel Rhythm</h1>
-
-    <div id="hud">
-        <span>Score: <span id="score">0</span></span>
-        <span>Combo: <span id="combo">0</span></span>
-        <span>ACC: <span id="acc">100.00%</span></span>
-    </div>
-
-    <div id="game">
-        <div class="lane" data-lane="0"></div>
-        <div class="lane" data-lane="1"></div>
-        <div class="lane" data-lane="2"></div>
-        <div class="lane" data-lane="3"></div>
-
-        <div id="judge-line"></div>
-    </div>
     <div id="game-container">
-  <div id="hud">
-    <span id="score">0</span>
-    <span id="combo">0</span>
-  </div>
+        <div id="hud">
+            <div class="stat">SCORE: <span id="score">0</span></div>
+            <div class="stat">COMBO: <span id="combo">0</span></div>
+            <div class="stat">ACC: <span id="acc">100.00%</span></div>
+        </div>
 
-  <div id="lane-container">
-    <div class="lane" data-lane="0"></div>
-    <div class="lane" data-lane="1"></div>
-    <div class="lane" data-lane="2"></div>
-    <div class="lane" data-lane="3"></div>
-  </div>
-</div>
+        <div id="game-canvas">
+            <div id="lane-container">
+                <div class="lane" data-key="D"></div>
+                <div class="lane" data-key="F"></div>
+                <div class="lane" data-key="J"></div>
+                <div class="lane" data-key="K"></div>
+            </div>
+            
+            <div id="judge-line"></div>
+            
+            <div id="hit-feedback"></div>
+        </div>
 
-    <script src="game.js"></script>
-</body>
+        <div id="controls">
+            <button id="start-btn" onclick="startGame()">START GAME</button>
+        </div>
+    </div>
+
+    <script src="js/engine.js"></script>
+    </body>
 </html>
-<button onclick="startGame()">Start</button>
