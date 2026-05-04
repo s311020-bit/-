@@ -1,8 +1,10 @@
-pixel-rhythm
-pixel-rhythm/
-│
-├── index.html
-├── style.css
-├── game.js
-├── music.mp3
-└── chart.json
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pixel Rhythm</title>
+</head>
+<body style="background:black;color:white;text-align:center;">
+  <h1>我的節奏遊戲成功上線！</h1>
+</body>
+</html>
