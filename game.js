@@ -1,140 +1,383 @@
-const game = document.getElementById("game");
-const lanes = document.querySelectorAll(".lane");
+let notes = [];
+let score = 0;
+let combo = 0;
+let bgm = new Audio();
+
+function update(){}
+function spawnNote(){}
+function onMiss(){}
+function updateHUD(){}
+/************************************************
+ * PIXEL RHYTHM - COMMERCIAL CORE
+ ************************************************/
+
+// ===============================
+// CONFIG
+// ===============================
+const LANES = 4;
+const SCROLL_TIME = 2000;
+
+const JUDGE_WINDOWS = {
+  perfect: 30,
+  good: 70,
+  bad: 120,
+  miss: 180
+};
+
+// ===============================
+// GAME STATE
+// ===============================
+let score = 0;
+let combo = 0;
+
+let audioOffsetMs = 0;
+
+let notes = [];
+let activeHolds = new Map();
+
+let totalNotesJudged = 0;
+let accuracyScore = 0;
+let timingOffsets = [];
+
+let replayLog = [];
+let calibrationSamples = [];
+
+let currentScrollSpeed = 1;
+
+// ===============================
+// ELEMENTS
+// ===============================
+const bgm = document.getElementById("bgm");
+const laneEls = [...document.querySelectorAll(".lane")];
 
 const scoreEl = document.getElementById("score");
 const comboEl = document.getElementById("combo");
-const accEl = document.getElementById("acc");
 
-let score = 0;
-let combo = 0;
-let totalHit = 0;
-let totalAccuracy = 0;
-
-const noteSpeed = 4;
-
-const chart = [
-    {time:1000,lane:0},
-    {time:1500,lane:1},
-    {time:2000,lane:2},
-    {time:2500,lane:3},
-    {time:3000,lane:0},
-    {time:3500,lane:1},
-    {time:4000,lane:2},
-    {time:4500,lane:3},
+// ===============================
+// DEMO CHART
+// ===============================
+notes = [
+  { id: 1, lane: 0, timeMs: 1000 },
+  { id: 2, lane: 1, timeMs: 1500 },
+  { id: 3, lane: 2, timeMs: 2000 },
+  { id: 4, lane: 3, timeMs: 2500 },
+  { id: 5, lane: 1, timeMs: 3200, type: "hold", durationMs: 1200 }
 ];
 
-let startTime = null;
-let spawned = 0;
-let activeNotes = [];
-
-function spawnNote(lane){
-    const note = document.createElement("div");
-    note.className = "note";
-    note.style.top = "-20px";
-
-    lanes[lane].appendChild(note);
-
-    activeNotes.push({
-        lane,
-        el:note,
-        y:-20
-    });
+// ===============================
+// TIME
+// ===============================
+function nowMs() {
+  return bgm.currentTime * 1000 + audioOffsetMs;
 }
 
-function updateGame(timestamp){
-    if(!startTime) startTime = timestamp;
+// ===============================
+// HUD
+// ===============================
+function updateHUD() {
+  scoreEl.textContent = score;
+  comboEl.textContent = combo;
+}
 
-    const currentTime = timestamp - startTime;
+// ===============================
+// JUDGE
+// ===============================
+function judgeTiming(noteMs, hitMs) {
+  const diff = Math.abs(noteMs - hitMs);
 
-    while(
-        spawned < chart.length &&
-        currentTime >= chart[spawned].time - 2000
-    ){
-        spawnNote(chart[spawned].lane);
-        spawned++;
+  if (diff <= JUDGE_WINDOWS.perfect) return "PERFECT";
+  if (diff <= JUDGE_WINDOWS.good) return "GOOD";
+  if (diff <= JUDGE_WINDOWS.bad) return "BAD";
+  return "MISS";
+}
+
+function applyJudge(result, offsetMs = 0) {
+  totalNotesJudged++;
+  timingOffsets.push(offsetMs);
+
+  switch (result) {
+    case "PERFECT":
+      score += 100;
+      combo++;
+      accuracyScore += 100;
+      break;
+
+    case "GOOD":
+      score += 70;
+      combo++;
+      accuracyScore += 70;
+      break;
+
+    case "BAD":
+      score += 30;
+      combo = 0;
+      accuracyScore += 30;
+      break;
+
+    default:
+      onMiss();
+      return;
+  }
+
+  updateHUD();
+  updateAccuracyUI();
+}
+
+// ===============================
+// MISS
+// ===============================
+function onMiss() {
+  combo = 0;
+  updateHUD();
+}
+
+// ===============================
+// HIT
+// ===============================
+function hitLane(lane) {
+  const current = nowMs();
+
+  let target = null;
+  let bestDiff = Infinity;
+
+  for (const note of notes) {
+    if (note.hit) continue;
+    if (note.lane !== lane) continue;
+
+    const diff = Math.abs(note.timeMs - current);
+
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      target = note;
+    }
+  }
+
+  if (!target || bestDiff > JUDGE_WINDOWS.miss) {
+    onMiss();
+    return;
+  }
+
+  if (target.type === "hold") {
+    startHold(target);
+    return;
+  }
+
+  target.hit = true;
+
+  document.getElementById("note-" + target.id)?.remove();
+
+  applyJudge(
+    judgeTiming(target.timeMs, current),
+    current - target.timeMs
+  );
+}
+
+// ===============================
+// HOLD NOTE
+// ===============================
+function startHold(note) {
+  const current = nowMs();
+
+  const result = judgeTiming(note.timeMs, current);
+
+  if (result === "MISS") {
+    onMiss();
+    return;
+  }
+
+  note.hit = true;
+
+  activeHolds.set(note.lane, {
+    note,
+    endTime: note.timeMs + note.durationMs
+  });
+
+  const el = document.getElementById("note-" + note.id);
+
+  if (el) el.style.opacity = "0.5";
+
+  applyJudge(result, current - note.timeMs);
+}
+
+function releaseHold(lane) {
+  const hold = activeHolds.get(lane);
+
+  if (!hold) return;
+
+  const diff = Math.abs(nowMs() - hold.endTime);
+
+  if (diff <= JUDGE_WINDOWS.good) {
+    score += 300;
+    combo++;
+  } else {
+    onMiss();
+  }
+
+  document.getElementById("note-" + hold.note.id)?.remove();
+
+  activeHolds.delete(lane);
+
+  updateHUD();
+}
+
+function updateHoldSystem() {
+  const current = nowMs();
+
+  for (const [lane, hold] of activeHolds) {
+    if (current > hold.endTime + JUDGE_WINDOWS.miss) {
+      document.getElementById("note-" + hold.note.id)?.remove();
+
+      activeHolds.delete(lane);
+
+      onMiss();
+    }
+  }
+}
+
+// ===============================
+// SPAWN NOTE
+// ===============================
+function spawnNote(note) {
+  const el = document.createElement("div");
+
+  el.className = "note";
+  el.id = "note-" + note.id;
+
+  if (note.type === "hold") {
+    el.classList.add("hold");
+    el.style.height = `${note.durationMs / 4}px`;
+  }
+
+  laneEls[note.lane].appendChild(el);
+
+  note.spawned = true;
+}
+
+// ===============================
+// UPDATE LOOP
+// ===============================
+function update() {
+  const current = nowMs();
+
+  for (const note of notes) {
+    if (!note.spawned && current >= note.timeMs - SCROLL_TIME) {
+      spawnNote(note);
     }
 
-    activeNotes.forEach(note=>{
-        note.y += noteSpeed;
-        note.el.style.top = note.y + "px";
-    });
-
-    activeNotes = activeNotes.filter(note=>{
-        if(note.y > 700){
-            note.el.remove();
-            combo = 0;
-            updateHUD();
-            return false;
-        }
-        return true;
-    });
-
-    requestAnimationFrame(updateGame);
-}
-
-function hitLane(lane){
-    let target = null;
-    let bestDiff = Infinity;
-
-    activeNotes.forEach(note=>{
-        if(note.lane !== lane) return;
-
-        const diff = Math.abs(note.y - 580);
-
-        if(diff < bestDiff){
-            bestDiff = diff;
-            target = note;
-        }
-    });
-
-    if(!target) return;
-
-    let acc = 0;
-
-    if(bestDiff < 20){
-        score += 300;
-        combo++;
-        acc = 100;
-    }else if(bestDiff < 50){
-        score += 100;
-        combo++;
-        acc = 70;
-    }else if(bestDiff < 80){
-        score += 50;
-        combo = 0;
-        acc = 40;
-    }else{
-        return;
+    if (!note.hit && current > note.timeMs + JUDGE_WINDOWS.miss) {
+      note.hit = true;
+      document.getElementById("note-" + note.id)?.remove();
+      onMiss();
     }
+  }
 
-    totalHit++;
-    totalAccuracy += acc;
+  updateHoldSystem();
 
-    target.el.remove();
-    activeNotes = activeNotes.filter(n=>n!==target);
-
-    updateHUD();
+  requestAnimationFrame(update);
 }
 
-function updateHUD(){
-    scoreEl.textContent = score;
-    comboEl.textContent = combo;
+// ===============================
+// ACCURACY UI
+// ===============================
+function getAccuracy() {
+  if (!totalNotesJudged) return 100;
 
-    const accuracy =
-        totalHit === 0
-        ? 100
-        : totalAccuracy / totalHit;
-
-    accEl.textContent = accuracy.toFixed(2) + "%";
+  return (
+    accuracyScore /
+    (totalNotesJudged * 100)
+  ) * 100;
 }
 
-window.addEventListener("keydown",e=>{
-    const key = e.key.toLowerCase();
+function getRank() {
+  const acc = getAccuracy();
 
-    if(key==="a") hitLane(0);
-    if(key==="s") hitLane(1);
-    if(key==="d") hitLane(2);
-    if(key==="f") hitLane(3);
+  if (acc >= 99.5) return "SSS";
+  if (acc >= 98) return "SS";
+  if (acc >= 95) return "S";
+  if (acc >= 90) return "A";
+  if (acc >= 80) return "B";
+  if (acc >= 70) return "C";
+
+  return "D";
+}
+
+function updateAccuracyUI() {
+  let el = document.getElementById("accuracy");
+
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "accuracy";
+
+    document.body.appendChild(el);
+  }
+
+  el.textContent =
+    `ACC ${getAccuracy().toFixed(2)}% | ${getRank()}`;
+}
+
+// ===============================
+// RESULT
+// ===============================
+function showResultScreen() {
+  const panel = document.createElement("div");
+
+  panel.innerHTML = `
+    <div class="result-panel">
+      <h1>RESULT</h1>
+      <p>Score: ${score}</p>
+      <p>Accuracy: ${getAccuracy().toFixed(2)}%</p>
+      <p>Rank: ${getRank()}</p>
+      <button onclick="location.reload()">Restart</button>
+    </div>
+  `;
+
+  document.body.appendChild(panel);
+}
+
+// ===============================
+// INPUT
+// ===============================
+window.addEventListener("keydown", e => {
+  const map = {
+    a: 0,
+    w: 1,
+    s: 2,
+    d: 3
+  };
+
+  const lane = map[e.key.toLowerCase()];
+
+  if (lane !== undefined) {
+    replayLog.push({
+      lane,
+      timeMs: nowMs()
+    });
+
+    hitLane(lane);
+  }
 });
 
-requestAnimationFrame(updateGame);
+window.addEventListener("keyup", e => {
+  const map = {
+    a: 0,
+    w: 1,
+    s: 2,
+    d: 3
+  };
+
+  const lane = map[e.key.toLowerCase()];
+
+  if (lane !== undefined) {
+    releaseHold(lane);
+  }
+});
+
+// ===============================
+// START
+// ===============================
+bgm.addEventListener("ended", showResultScreen);
+
+window.startGame = function () {
+  bgm.play();
+  update();
+};
