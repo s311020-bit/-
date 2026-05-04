@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pixel Rhythm</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body style="background:black;color:white;text-align:center;">
-  <h1>我的節奏遊戲成功上線！</h1>
+<body>
+
+  <div id="hud">
+    <div id="score">Score: 0</div>
+    <div id="combo">Combo: 0</div>
+  </div>
+
+  <div id="game-container">
+    <div class="lane" data-lane="0"></div>
+    <div class="lane" data-lane="1"></div>
+    <div class="lane" data-lane="2"></div>
+    <div class="lane" data-lane="3"></div>
+    <div id="judge-line"></div>
+  </div>
+
+  <audio id="bgm" src="music.mp3"></audio>
+
+  <script src="game.js"></script>
 </body>
 </html>
