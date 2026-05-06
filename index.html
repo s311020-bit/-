@@ -8,32 +8,44 @@
 </head>
 <body>
 
-    <div id="game-container">
-        <div id="hud">
-            <div class="stat">SCORE: <span id="score">0</span></div>
-            <div class="stat">COMBO: <span id="combo">0</span></div>
-            <div class="stat">ACC: <span id="acc">100.00%</span></div>
-        </div>
+<div id="game-container">
 
-        <div id="game-canvas">
-            <div id="lane-container">
-                <div class="lane" data-key="D"></div>
-                <div class="lane" data-key="F"></div>
-                <div class="lane" data-key="J"></div>
-                <div class="lane" data-key="K"></div>
-            </div>
-            
-            <div id="judge-line"></div>
-            
-            <div id="hit-feedback"></div>
-        </div>
+    <h1>PIXEL RHYTHM</h1>
 
-        <div id="controls">
-            <button id="start-btn" onclick="startGame()">START GAME</button>
-        </div>
+    <div id="hud">
+        <div class="stat">SCORE: <span id="score">0</span></div>
+        <div class="stat">COMBO: <span id="combo">0</span></div>
+        <div class="stat">ACC: <span id="acc">100.00%</span></div>
     </div>
 
-    <script src="js/engine.js"></script>
-    <audio id="bgm" src="assets/music/song1.mp3"></audio>
-    </body>
+    <!-- 遊戲角色 -->
+    <div id="character-area">
+        <img id="game-character" src="assets/character/idle.png" alt="character">
+    </div>
+
+    <div id="game-canvas">
+
+        <div id="lane-container">
+            <div class="lane" data-key="D"></div>
+            <div class="lane" data-key="F"></div>
+            <div class="lane" data-key="J"></div>
+            <div class="lane" data-key="K"></div>
+        </div>
+
+        <div id="judge-line"></div>
+
+        <div id="hit-feedback"></div>
+
+    </div>
+
+    <div id="controls">
+        <button id="start-btn" onclick="startGame()">START GAME</button>
+    </div>
+
+</div>
+
+<audio id="bgm" src="assets/music/song1.mp3"></audio>
+
+<script src="js/game.js"></script>
+</body>
 </html>
