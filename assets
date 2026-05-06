@@ -1,0 +1,7 @@
+assets/
+ └── character/
+      idle.png
+      perfect.png
+      good.png
+      bad.png
+      miss.png
