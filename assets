@@ -1,7 +1,16 @@
 assets/
- └── character/
-      idle.png
-      perfect.png
-      good.png
-      bad.png
-      miss.png
+└── character/
+    ├── idle/
+    │   ├── 1.png
+    │   ├── 2.png
+    │   ├── 3.png
+    │   └── 4.png
+    │
+    ├── perfect/
+    │   ├── 1.png
+    │   ├── 2.png
+    │   └── 3.png
+    │
+    ├── good/
+    ├── bad/
+    └── miss/
