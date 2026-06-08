@@ -23,8 +23,12 @@ h1{
 }
 
 #game-character{
-    width:120px;
-    image-rendering:pixelated;
+    width:180px;
+    image-rendering:auto;
+
+    animation:
+        idleBreath 2s ease-in-out infinite,
+        idleSwing 4s ease-in-out infinite;
 }
 
 #game-canvas{
@@ -102,4 +106,81 @@ h1{
 
 .feedback-miss{
     color:red;
+}
+@keyframes idleBreath{
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.04);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+@keyframes idleSwing{
+    0%{
+        rotate:-2deg;
+    }
+
+    50%{
+        rotate:2deg;
+    }
+
+    100%{
+        rotate:-2deg;
+    }
+}
+
+.perfect-anim{
+    animation:perfectPop .25s ease;
+}
+
+.good-anim{
+    animation:goodBounce .25s ease;
+}
+
+.bad-anim{
+    animation:badShake .25s ease;
+}
+
+.miss-anim{
+    animation:missDrop .4s ease;
+}
+
+@keyframes perfectPop{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+}
+
+@keyframes goodBounce{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+    100%{transform:translateY(0);}
+}
+
+@keyframes badShake{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-10px);}
+    50%{transform:translateX(10px);}
+    75%{transform:translateX(-10px);}
+    100%{transform:translateX(0);}
+}
+
+@keyframes missDrop{
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(15px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
 }
