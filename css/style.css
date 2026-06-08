@@ -87,3 +87,19 @@ h1{
     font-weight:bold;
     pointer-events:none;
 }
+.feedback-perfect{
+    color:gold;
+    text-shadow:0 0 10px gold;
+}
+
+.feedback-good{
+    color:#00ff88;
+}
+
+.feedback-bad{
+    color:orange;
+}
+
+.feedback-miss{
+    color:red;
+}
