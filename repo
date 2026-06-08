@@ -1,25 +1,44 @@
 repo/
+
+├─ index.html
+
+├─ css/
+│   └─ style.css
+
+├─ js/
+│   ├─ game.js
+│   ├─ character.js
+│   ├─ replay.js
+│   └─ chart.js
+
+├─ assets/
 │
-├── index.html
-│
-├── css/
-│   └── style.css
-│
-├── js/
-│   └── game.js
-│
-└── assets/
-    ├── music/
-    │   └── song1.mp3
-    │
-    └── character/
-        ├── idle/
-        │   ├── 1.png
-        │   ├── 2.png
-        │   ├── 3.png
-        │   └── 4.png
-        │
-        ├── perfect/
-        ├── good/
-        ├── bad/
-        └── miss/
+│   ├─ music/
+│   │   └─ song1.mp3
+│   │
+│   ├─ charts/
+│   │   └─ song1.json
+│   │
+│   └─ character/
+│       │
+│       ├─ idle/
+│       │   ├─ 1.png
+│       │   ├─ 2.png
+│       │   ├─ 3.png
+│       │   └─ 4.png
+│       │
+│       ├─ perfect/
+│       │   ├─ 1.png
+│       │   └─ 2.png
+│       │
+│       ├─ good/
+│       │   ├─ 1.png
+│       │   └─ 2.png
+│       │
+│       ├─ bad/
+│       │   ├─ 1.png
+│       │   └─ 2.png
+│       │
+│       └─ miss/
+│           ├─ 1.png
+│           └─ 2.png
