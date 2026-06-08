@@ -102,6 +102,7 @@ function applyJudge(result){
 }
 
 function animateCharacter(type){
+
     const map={
         perfect:"assets/character/perfect.png",
         good:"assets/character/good.png",
@@ -111,9 +112,47 @@ function animateCharacter(type){
 
     characterEl.src=map[type];
 
+    characterEl.classList.remove(
+        "perfect-anim",
+        "good-anim",
+        "bad-anim",
+        "miss-anim"
+    );
+
+    // 強制重新觸發動畫
+    void characterEl.offsetWidth;
+
+    switch(type){
+
+        case "perfect":
+            characterEl.classList.add("perfect-anim");
+            break;
+
+        case "good":
+            characterEl.classList.add("good-anim");
+            break;
+
+        case "bad":
+            characterEl.classList.add("bad-anim");
+            break;
+
+        case "miss":
+            characterEl.classList.add("miss-anim");
+            break;
+    }
+
     setTimeout(()=>{
+
         characterEl.src="assets/character/idle.png";
-    },250);
+
+        characterEl.classList.remove(
+            "perfect-anim",
+            "good-anim",
+            "bad-anim",
+            "miss-anim"
+        );
+
+    },300);
 }
 
 function spawnNote(note){
