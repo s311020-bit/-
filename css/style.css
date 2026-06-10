@@ -308,3 +308,64 @@ h1{
         rotate:-2deg;
     }
 }
+/* =========================
+   Start Screen
+========================= */
+
+#start-screen{
+    position:fixed;
+    inset:0;
+
+    background:
+    linear-gradient(
+        180deg,
+        #101820,
+        #182c45
+    );
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+}
+
+.game-title{
+
+    font-size:72px;
+
+    color:white;
+
+    text-shadow:
+        0 0 10px cyan,
+        0 0 20px cyan;
+
+    margin-bottom:40px;
+}
+
+#menu-start-btn{
+
+    font-size:28px;
+
+    padding:
+        15px
+        40px;
+
+    cursor:pointer;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#00ffff;
+
+    color:black;
+
+    font-weight:bold;
+}
+
+#menu-start-btn:hover{
+
+    transform:scale(1.08);
+}
