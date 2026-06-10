@@ -21,6 +21,7 @@ const scoreEl = document.getElementById("score");
 const comboEl = document.getElementById("combo");
 const accEl = document.getElementById("acc");
 const characterEl = document.getElementById("game-character");
+characterEl.classList.add("live2d-idle");
 
 const chartData = [
     { id:1,lane:0,timeMs:1000 },
