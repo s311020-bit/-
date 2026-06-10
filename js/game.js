@@ -234,19 +234,35 @@ window.addEventListener("keydown",e=>{
     }
 });
 
-window.startGame=function(){
+window.startGame = function(){
+
+    console.log("START GAME CLICKED");
+
+    const startScreen =
+        document.getElementById("start-screen");
+
+    const gameContainer =
+        document.getElementById("game-container");
+
+    if(startScreen){
+        startScreen.style.display = "none";
+    }
+
+    if(gameContainer){
+        gameContainer.style.display = "block";
+    }
 
     if(gameRunning) return;
 
-    document.getElementById("start-screen").style.display="none";
-
     resetGame();
 
-    gameRunning=true;
+    gameRunning = true;
 
-    bgm.currentTime=0;
+    bgm.currentTime = 0;
 
-    bgm.play();
+    bgm.play().catch(err=>{
+        console.log(err);
+    });
 
     update();
 }
