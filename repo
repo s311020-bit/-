@@ -11,34 +11,24 @@ repo/
 │   ├─ replay.js
 │   └─ chart.js
 
-├─ assets/
+assets
 │
-│   ├─ music/
-│   │   └─ song1.mp3
-│   │
-│   ├─ charts/
-│   │   └─ song1.json
-│   │
-│   └─ character/
-│       │
-│       ├─ idle/
-│       │   ├─ 1.png
-│       │   ├─ 2.png
-│       │   ├─ 3.png
-│       │   └─ 4.png
-│       │
-│       ├─ perfect/
-│       │   ├─ 1.png
-│       │   └─ 2.png
-│       │
-│       ├─ good/
-│       │   ├─ 1.png
-│       │   └─ 2.png
-│       │
-│       ├─ bad/
-│       │   ├─ 1.png
-│       │   └─ 2.png
-│       │
-│       └─ miss/
-│           ├─ 1.png
-│           └─ 2.png
+├─ music
+│   └─ song1.mp3
+│
+└─ character
+    │
+    ├─ idle
+    │   └─ 1.png
+    │
+    ├─ perfect
+    │   └─ 1.png
+    │
+    ├─ good
+    │   └─ 1.png
+    │
+    ├─ bad
+    │   └─ 1.png
+    │
+    └─ miss
+        └─ 1.png
