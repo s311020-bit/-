@@ -103,12 +103,12 @@ function applyJudge(result){
 
 function animateCharacter(type){
 
-    const map={
-        perfect:"assets/character/perfect.png",
-        good:"assets/character/good.png",
-        bad:"assets/character/bad.png",
-        miss:"assets/character/miss.png"
-    };
+  const map={
+    perfect:"assets/character/perfect/1.png",
+    good:"assets/character/good/1.png",
+    bad:"assets/character/bad/1.png",
+    miss:"assets/character/miss/1.png"
+};
 
     characterEl.src=map[type];
 
@@ -143,8 +143,7 @@ function animateCharacter(type){
 
     setTimeout(()=>{
 
-        characterEl.src="assets/character/idle.png";
-
+       characterEl.src="assets/character/idle/1.png";
         characterEl.classList.remove(
             "perfect-anim",
             "good-anim",
