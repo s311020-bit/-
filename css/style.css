@@ -23,15 +23,15 @@ h1{
 ========================= */
 
 #character-area{
-    margin-bottom:15px;
     height:220px;
     display:flex;
     justify-content:center;
-    align-items:center;
+    align-items:flex-end;
+    margin-bottom:10px;
 }
 
 #game-character{
-    width:180px;
+    width:220px;
     max-height:220px;
     object-fit:contain;
     image-rendering:auto;
