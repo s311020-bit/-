@@ -18,18 +18,36 @@ h1{
     font-size:20px;
 }
 
+/* =========================
+   Character System
+========================= */
+
 #character-area{
     margin-bottom:15px;
+    height:220px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 #game-character{
     width:180px;
+    max-height:220px;
+    object-fit:contain;
     image-rendering:auto;
 
     animation:
         idleBreath 2s ease-in-out infinite,
         idleSwing 4s ease-in-out infinite;
+
+    transition:
+        transform .15s,
+        filter .15s;
 }
+
+/* =========================
+   Game Area
+========================= */
 
 #game-canvas{
     position:relative;
@@ -65,6 +83,10 @@ h1{
     box-shadow:0 0 10px cyan;
 }
 
+/* =========================
+   Notes
+========================= */
+
 .note{
     position:absolute;
     width:90%;
@@ -78,10 +100,25 @@ h1{
     background:#aa66ff;
 }
 
-.lane:nth-child(1) .note{ background:#ff4d4d; }
-.lane:nth-child(2) .note{ background:#4dff4d; }
-.lane:nth-child(3) .note{ background:#4d4dff; }
-.lane:nth-child(4) .note{ background:#ffff4d; }
+.lane:nth-child(1) .note{
+    background:#ff4d4d;
+}
+
+.lane:nth-child(2) .note{
+    background:#4dff4d;
+}
+
+.lane:nth-child(3) .note{
+    background:#4d4dff;
+}
+
+.lane:nth-child(4) .note{
+    background:#ffff4d;
+}
+
+/* =========================
+   Judge Text
+========================= */
 
 #hit-feedback{
     position:absolute;
@@ -91,6 +128,7 @@ h1{
     font-weight:bold;
     pointer-events:none;
 }
+
 .feedback-perfect{
     color:gold;
     text-shadow:0 0 10px gold;
@@ -107,7 +145,13 @@ h1{
 .feedback-miss{
     color:red;
 }
+
+/* =========================
+   Idle Animation
+========================= */
+
 @keyframes idleBreath{
+
     0%{
         transform:scale(1);
     }
@@ -122,18 +166,23 @@ h1{
 }
 
 @keyframes idleSwing{
+
     0%{
-        rotate:-2deg;
+        transform:rotate(-2deg);
     }
 
     50%{
-        rotate:2deg;
+        transform:rotate(2deg);
     }
 
     100%{
-        rotate:-2deg;
+        transform:rotate(-2deg);
     }
 }
+
+/* =========================
+   Judge Animations
+========================= */
 
 .perfect-anim{
     animation:perfectPop .25s ease;
@@ -152,26 +201,60 @@ h1{
 }
 
 @keyframes perfectPop{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.2);}
-    100%{transform:scale(1);}
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.2);
+    }
+
+    100%{
+        transform:scale(1);
+    }
 }
 
 @keyframes goodBounce{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-10px);}
-    100%{transform:translateY(0);}
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
 }
 
 @keyframes badShake{
-    0%{transform:translateX(0);}
-    25%{transform:translateX(-10px);}
-    50%{transform:translateX(10px);}
-    75%{transform:translateX(-10px);}
-    100%{transform:translateX(0);}
+
+    0%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-10px);
+    }
+
+    50%{
+        transform:translateX(10px);
+    }
+
+    75%{
+        transform:translateX(-10px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
 }
 
 @keyframes missDrop{
+
     0%{
         transform:translateY(0);
     }
