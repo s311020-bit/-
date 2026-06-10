@@ -180,7 +180,7 @@ function update(){
 
         if(el && !note.hit){
             const progress=(current-(note.timeMs-SCROLL_TIME))/SCROLL_TIME;
-            el.style.top=`${progress*600}px`;
+            el.style.top=`${progress*800-100}px`;
         }
 
         if(!note.hit && current>note.timeMs+JUDGE_WINDOWS.miss){
@@ -235,13 +235,17 @@ window.addEventListener("keydown",e=>{
 });
 
 window.startGame=function(){
+
     if(gameRunning) return;
+
+    document.getElementById("start-screen").style.display="none";
 
     resetGame();
 
     gameRunning=true;
 
     bgm.currentTime=0;
+
     bgm.play();
 
     update();
